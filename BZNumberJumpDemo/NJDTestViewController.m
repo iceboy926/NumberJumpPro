@@ -12,12 +12,14 @@
 #import "DisplayerView.h"
 #import "HTPressableButton.h"
 #import "UIColor+HTColor.h"
+#import "SpeakerView.h"
 
 @interface NJDTestViewController ()
 
 @property (nonatomic, strong) UICountingLabel *countLabel;
 @property (nonatomic, strong) DisplayerView *displayerView;
 @property (nonatomic, strong) HTPressableButton *roundedRectButton;
+@property (nonatomic, strong) SpeakerView *speakView;
 
 @end
 
@@ -51,8 +53,15 @@
     //[self initCountLable];
     [self initDisplayView];
     [self initRoundRectButton];
+    //[self initSpeakView];
 }
 
+- (void)initSpeakView
+{
+    _speakView = [[SpeakerView alloc] initWithFrame:CGRectMake(10, 300, 50, 80)];
+
+    [self.view addSubview:_speakView];
+}
 
 - (void)initDisplayView
 {
@@ -105,15 +114,59 @@
 
 - (void)initRoundRectButton
 {
-    _roundedRectButton = [HTPressableButton buttonWithType:UIButtonTypeCustom];
-    _roundedRectButton.frame = CGRectMake(10, 200, 260, 50);
-    _roundedRectButton.buttonColor = [UIColor grapeFruitColor];
-    _roundedRectButton.shadowColor = [UIColor grapeFruitDarkColor];
-    _roundedRectButton.style = HTPressableButtonStyleRounded;
-    [_roundedRectButton setTitle:@"Rounded" forState:UIControlStateNormal];
-    [_roundedRectButton addTarget:self action:@selector(onClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_roundedRectButton];
+//    _roundedRectButton = [HTPressableButton buttonWithType:UIButtonTypeCustom];
+//    _roundedRectButton.frame = CGRectMake(10, 200, 80, 80);
+//    _roundedRectButton.buttonColor = [UIColor clearColor];
+//    _roundedRectButton.shadowColor = [UIColor grapeFruitDarkColor];
+//    _roundedRectButton.style = HTPressableButtonStyleRounded;
+//    
+//    [_roundedRectButton setTitle:@"Rounded" forState:UIControlStateNormal];
+//    [_roundedRectButton addTarget:self action:@selector(onClick) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:_roundedRectButton];
+//    
+//    _speakView = [[SpeakerView alloc] initWithFrame:CGRectMake(0, 0, 50, 80)];
+//    
+//    //_speakView.center = _roundedRectButton.center;
+//    
+//    [_roundedRectButton addSubview:_speakView];
+    
+    UIButton *displayerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    displayerBtn.frame = CGRectMake(10, 200, 100, 100);
+    displayerBtn.backgroundColor = [UIColor clearColor];
+    displayerBtn.layer.cornerRadius = 8;
+    displayerBtn.layer.masksToBounds = YES;
+    //给图层添加一个有色边框
+    displayerBtn.layer.borderWidth = 3;
+    
+    displayerBtn.layer.borderColor = [[UIColor colorWithRed:0 green:0.2 blue:0.07 alpha:1] CGColor];
+    
+    _speakView = [[SpeakerView alloc] initWithFrame:CGRectMake(0, 0, 50, 80)];
+    _speakView.userInteractionEnabled = NO;
+    
+    CGPoint point = CGPointMake(50, 50);
+    
+    _speakView.center = point;
+    
+    [displayerBtn addTarget:self action:@selector(recordButtonTouchDown) forControlEvents:UIControlEventTouchDown];
+    [displayerBtn addTarget:self action:@selector(recordButtonTouchUpInside) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside];
+    
+    [displayerBtn addSubview:_speakView];
+    
+    [self.view addSubview:displayerBtn];
+
 }
+
+- (void)recordButtonTouchDown
+{
+    NSLog(@"recordButtonTouchDown");
+}
+
+- (void)recordButtonTouchUpInside
+{
+    NSLog(@"recordButtonTouchUpInside");
+}
+
+
 
 - (void)onClick {
 //    [textLayer jumpNumber];
